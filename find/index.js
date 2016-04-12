@@ -1,5 +1,5 @@
 /*!
- * ts-array-polyfills - https://github.com/nabijaczleweli/ts-array-polyfills
+ * ts-polyfills - https://github.com/nabijaczleweli/ts-polyfills
  * MIT License - https://opensource.org/licenses/MIT
  * nabijaczleweli - http://nabijaczleweli.xyz
  * @preserve
