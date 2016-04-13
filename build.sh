@@ -44,6 +44,7 @@ for polyfill in $polyfills; do
 		cat "$OUT/$polyfill/raw.js"
 		echo "$js_main_tail"
 	) > "$OUT/$polyfill/index.js"
+	python -m jsmin "$OUT/$polyfill/index.js" > "$OUT/$polyfill/index.min.js"
 done
 
 
@@ -53,6 +54,7 @@ echo "Building JS almaganation..."
 	find "$OUT" -name "raw.js" -exec awk "$awk_pad_nl" {} + -exec rm {} +
 	echo "$js_main_tail"
 ) > "$OUT/index.js"
+python -m jsmin "$OUT/index.js" > "$OUT/index.min.js"
 
 
 for polyfill in $polyfills; do
