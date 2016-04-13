@@ -24,7 +24,7 @@ for polyfill in $polyfills; do
   (
   	echo    "  if (!$class.prototype.$name) {"
   	echo    "    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/$class/$name#Polyfill"
-  	echo -n "    $class.prototype.$name = "; perl -pe 'chomp if eof' "$polyfill/polyfill.js" | sed '2,$s/^/    /g'
+  	echo -n "    $class.prototype.$name = "; sed '2,$s/^/    /g' "$polyfill/polyfill.js"
   	echo    "  }"
   ) > "$OUT/$polyfill/raw.js"
 
@@ -41,7 +41,7 @@ echo "Building JS almaganation..."
 	echo "$js_main_head"
 	/usr/bin/find "$OUT" -name "raw.js" -exec awk "$awk_pad_nl" {} + -exec rm {} +
 	echo "$js_main_tail"
-) > "$OUT/$polyfill/index.js"
+) > "$OUT/index.js"
 
 
 for polyfill in $polyfills; do
@@ -49,10 +49,11 @@ for polyfill in $polyfills; do
   class=$(shyaml get-value class < "$polyfill/ts.yml")
   (
   	echo    "interface $class {"
-  	echo -n "  /**"; head -n1 "$polyfill/ts.doc"
+  	echo -n "  /** "; head -n1 "$polyfill/ts.doc"
   	tail -n+2 "$polyfill/ts.doc" | sed 's/^/    \* /g'
-  	echo -n "    */"
-  	cat "$polyfill/signature.d.ts"
+  	echo    "    */"
+  	echo -n "  "; cat "$polyfill/signature.d.ts"
+  	echo    "}"
   ) > "$OUT/$polyfill/raw.d.ts"
 
 	(
@@ -67,4 +68,4 @@ echo "Building TS typings almaganation..."
 	cat LICENSE.head
 	echo
 	/usr/bin/find "$OUT" -name "raw.d.ts" -exec awk "$awk_pad_nl" {} + -exec rm {} +
-) > "$OUT/$polyfill/index.d.ts"
+) > "$OUT/index.d.ts"
