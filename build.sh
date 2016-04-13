@@ -10,6 +10,17 @@ $(cat LICENSE.head)
 
 (function() {"
 js_main_tail="})();"
+typings_json_head="\
+{
+  \"name\": \""
+typings_json_tail="\
+\",
+  \"homepage\": \"https://github.com/nabijaczleweli/ts-polyfill\",
+  \"ambient\": true,
+  \"files\": [
+    \"index.d.ts\"
+  ]
+}"
 
 polyfills=$(echo ./*/ | sed -e 's:\./::g' -e 's:/::g')
 if [[ -z "$OUT" ]]; then
@@ -39,13 +50,14 @@ done
 echo "Building JS almaganation..."
 (
 	echo "$js_main_head"
-	/usr/bin/find "$OUT" -name "raw.js" -exec awk "$awk_pad_nl" {} + -exec rm {} +
+	find "$OUT" -name "raw.js" -exec awk "$awk_pad_nl" {} + -exec rm {} +
 	echo "$js_main_tail"
 ) > "$OUT/index.js"
 
 
 for polyfill in $polyfills; do
 	echo "Building TS typings for $polyfill..."
+  name=$(shyaml get-value name < "$polyfill/ts.yml")
   class=$(shyaml get-value class < "$polyfill/ts.yml")
   (
   	echo    "interface $class {"
@@ -61,11 +73,23 @@ for polyfill in $polyfills; do
 		echo
 		cat "$OUT/$polyfill/raw.d.ts"
 	) > "$OUT/$polyfill/index.d.ts"
+
+	(
+		echo -n "$typings_json_head"
+		echo -n "$name"
+		echo    "$typings_json_tail"
+	) > "$OUT/$polyfill/typings.json"
 done
 
 echo "Building TS typings almaganation..."
 (
 	cat LICENSE.head
 	echo
-	/usr/bin/find "$OUT" -name "raw.d.ts" -exec awk "$awk_pad_nl" {} + -exec rm {} +
+	find "$OUT" -name "raw.d.ts" -exec awk "$awk_pad_nl" {} + -exec rm {} +
 ) > "$OUT/index.d.ts"
+
+(
+	echo -n "$typings_json_head"
+	echo -n "ts-polyfills"
+	echo    "$typings_json_tail"
+) > "$OUT/typings.json"
