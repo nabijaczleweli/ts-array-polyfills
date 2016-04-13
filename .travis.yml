@@ -5,4 +5,4 @@ install:
   - pip install shyaml
 
 script:
-  - build.sh
+  - ./build.sh
