@@ -21,6 +21,23 @@ typings_json_tail="\
     \"index.d.ts\"
   ]
 }"
+bower_json_head="\
+{
+  \"name\": \""
+bower_json_tail="\
+\",
+  \"main\": \"index.js\",
+  \"license\": \"MIT\",
+  \"moduleType\": \"globals\",
+  \"authors\": [
+    \"nabijaczleweli <nabijaczleweli@gmail.com>\"
+  ],
+  \"homepage\": \"https://github.com/nabijaczleweli/ts-polyfills\",
+    \"repository\": {
+    \"type\": \"git\",
+    \"url\": \"git://github.com/nabijaczleweli/ts-polyfills.git\"
+  }
+}"
 
 polyfills=$(echo ./*/ | sed -e 's:\./::g' -e 's:/::g')
 if [[ -z "$OUT" ]]; then
@@ -95,3 +112,21 @@ echo "Building TS typings almaganation..."
 	echo -n "ts-polyfills"
 	echo    "$typings_json_tail"
 ) > "$OUT/typings.json"
+
+
+for polyfill in $polyfills; do
+	echo "Building bower.json for $polyfill..."
+  name=$(shyaml get-value name < "$polyfill/js.yml")
+	(
+		echo -n "$bower_json_head"
+		echo -n "ts-polyfills-$name"
+		echo    "$bower_json_tail"
+	) > "$OUT/$polyfill/bower.json"
+done
+
+echo "Building bower.json almaganation..."
+(
+	echo -n "$bower_json_head"
+	echo -n "ts-polyfills"
+	echo    "$bower_json_tail"
+) > "$OUT/bower.json"
