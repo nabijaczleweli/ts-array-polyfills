@@ -33,7 +33,7 @@ bower_json_tail="\
     \"nabijaczleweli <nabijaczleweli@gmail.com>\"
   ],
   \"homepage\": \"https://github.com/nabijaczleweli/ts-polyfills\",
-    \"repository\": {
+  \"repository\": {
     \"type\": \"git\",
     \"url\": \"git://github.com/nabijaczleweli/ts-polyfills.git\"
   }
