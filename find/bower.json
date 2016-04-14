@@ -1,0 +1,14 @@
+{
+  "name": "ts-polyfills-find",
+  "main": "index.js",
+  "license": "MIT",
+  "moduleType": "globals",
+  "authors": [
+    "nabijaczleweli <nabijaczleweli@gmail.com>"
+  ],
+  "homepage": "https://github.com/nabijaczleweli/ts-polyfills",
+    "repository": {
+    "type": "git",
+    "url": "git://github.com/nabijaczleweli/ts-polyfills.git"
+  }
+}
