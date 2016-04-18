@@ -1,0 +1,8 @@
+{
+  "name": "array-polyfill-remove",
+  "homepage": "https://github.com/nabijaczleweli/ts-polyfill",
+  "ambient": true,
+  "files": [
+    "index.d.ts"
+  ]
+}
