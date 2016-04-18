@@ -49,11 +49,17 @@ for polyfill in $polyfills; do
   mkdir -p "$OUT/$polyfill"
   class=$(shyaml get-value class < "$polyfill/js.yml")
   name=$(shyaml get-value name < "$polyfill/js.yml")
+  src=$(shyaml get-value source < "$polyfill/js.yml")
+  echo "src${src}src"
+  src_line="    // $src\n"
+  if [[ -z "$src" ]]; then
+  	src_line=""
+  fi
   (
-  	echo    "  if (!$class.prototype.$name) {"
-  	echo    "    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/$class/$name#Polyfill"
-  	echo -n "    $class.prototype.$name = "; sed '2,$s/^/    /g' "$polyfill/polyfill.js"
-  	echo    "  }"
+  	echo     "  if (!$class.prototype.$name) {"
+  	echo -ne "$src_line"
+  	echo -n  "    $class.prototype.$name = "; sed '2,$s/^/    /g' "$polyfill/polyfill.js"
+  	echo     "  }"
   ) > "$OUT/$polyfill/raw.js"
 
 	(
