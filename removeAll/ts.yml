@@ -1,0 +1,2 @@
+name: array-polyfill-remove-all
+class: Array<T>
